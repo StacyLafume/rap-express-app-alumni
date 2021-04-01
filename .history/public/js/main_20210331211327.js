@@ -49,7 +49,6 @@ async function addLike(){
           })
           // response from the server
         const data = await response.json()
-        // "like added"
         console.log(data)
         location.reload()
 

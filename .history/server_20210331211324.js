@@ -38,7 +38,7 @@ app.use(express.json())
 
 
 app.get('/', (request, response) => {
-    // access rappers collection sorts likes from descending order
+    // access rappers collection sorts form descending order
     db.collection('rappers').find().sort({ likes: -1 }).toArray()
         .then(data => {
             // rendering data from data base to ejs
@@ -62,16 +62,13 @@ app.post('/addRapper', (request, response) => {
 })
 
 app.put('/addOneLike', (request, response) => {
-    // looks in rappers collection for matching key value pairs in ascending order (time of creation "oldest one")
     db.collection('rappers').updateOne({ stageName: request.body.stageNameS, birthName: request.body.birthNameS, likes: request.body.likesS }, {
-        // if it finds the fields it will updates with set
         $set: {
             likes: request.body.likesS + 1
         }
     }, {
-        // sorting ids by descending order
         sort: { _id: -1 },
-        upsert: false
+        upsert: true
     })
         .then(result => {
             console.log('Added One Like')
@@ -82,9 +79,7 @@ app.put('/addOneLike', (request, response) => {
 
 })
 
-// listening to delete rapper
 app.delete('/deleteRapper', (request, response) => {
-    // look up stage name in the db and delete them 
     db.collection('rappers').deleteOne({ stageName: request.body.stageNameS })
         .then(result => {
             console.log('Rapper Deleted')
@@ -94,7 +89,6 @@ app.delete('/deleteRapper', (request, response) => {
 
 })
 
-// process.env.PORT is for hosting otherwise its PORT 2121
 app.listen(process.env.PORT || PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })

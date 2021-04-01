@@ -31,25 +31,20 @@ async function deleteRapper(){
 }
 
 async function addLike(){
-    // gets text from the DOM
     const sName = this.parentNode.childNodes[1].innerText
     const bName = this.parentNode.childNodes[3].innerText
     const tLikes = Number(this.parentNode.childNodes[5].innerText)
     try{
-        // fetch the put request
         const response = await fetch('addOneLike', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
-            // send text as  json 
             body: JSON.stringify({
               'stageNameS': sName,
               'birthNameS': bName,
               'likesS': tLikes
             })
           })
-          // response from the server
         const data = await response.json()
-        // "like added"
         console.log(data)
         location.reload()
 
